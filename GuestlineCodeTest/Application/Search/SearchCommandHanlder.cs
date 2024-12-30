@@ -1,16 +1,17 @@
 namespace GuestlineCodeTest.Application.Search;
 
 public record SearchQuery(string HotelId, DateTime From, DateTime To, string RoomType);
-public record SearchQueryResult(string HotelId, string RoomType, IReadOnlyCollection<(DateTime From, DateTime To)> Availability);
+public record AvailabilityRange(DateTime From, DateTime To, int Count);
+public record SearchQueryResult(string HotelId, string RoomType, IReadOnlyCollection<AvailabilityRange> Availability);
 
-public class SearchCommandHandler(IHotelsRepository hotelsRepository, IBookingRepository bookingRepository)
+public class SearchCommandHandler(IHotelRepository hotelRepository, IBookingRepository bookingRepository)
 {
     public SearchQueryResult Handle(SearchQuery query)
     {
         var roomCount =  GetRoomCount(query);
         if (roomCount == 0)
         {
-            return new SearchQueryResult(query.HotelId, query.RoomType, new List<(DateTime From, DateTime To)>());
+            return new SearchQueryResult(query.HotelId, query.RoomType, new List<AvailabilityRange>());
 
         }
         var bookings = bookingRepository.GetBookings(query.HotelId, query.From, query.To, query.RoomType);
@@ -20,42 +21,47 @@ public class SearchCommandHandler(IHotelsRepository hotelsRepository, IBookingRe
 
    }
 
-    private IEnumerable<(DateTime From, DateTime To)> GetAvailability(SearchQuery query, int roomCount, IReadOnlyCollection<Booking> bookings)
+    private IEnumerable<AvailabilityRange> GetAvailability(SearchQuery query, int roomCount, IReadOnlyCollection<Booking> bookings)
     {
-        bool isAvailable = false;
+        int availableRooms = 0;
         DateTime from = query.From;
         for(var date = query.From; date <= query.To; date = date.AddDays(1))
         {
-            var roomAvailable = IsRoomAvailable(bookings, date, roomCount);
+            var availableRoomsInDay = roomCount - GetBookingInDay(bookings, date);
 
-            if (roomAvailable && !isAvailable)
+            if (availableRoomsInDay > 0 && availableRooms == 0)
             {
                     from = date;
-                    isAvailable = true;
+                    availableRooms = availableRoomsInDay;
                     continue;
             }
 
-            if (!roomAvailable && isAvailable)
+            if (availableRoomsInDay <= 0 && availableRooms > 0)
             {
-                yield return (from, date.AddDays(-1));
-                isAvailable = false;
+                yield return new (from, date.AddDays(-1), availableRooms);
+                availableRooms = 0;
                 continue;
+            }
+
+            if (availableRoomsInDay > 0 && availableRooms > 0 && availableRooms > availableRoomsInDay)
+            {
+                availableRooms = availableRoomsInDay;
             }
         }
 
-        if (isAvailable)
+        if (availableRooms > 0)
         {
-            yield return (from, query.To);
+            yield return new (from, query.To, availableRooms);
         }
     }
 
-    private bool IsRoomAvailable(IReadOnlyCollection<Booking> bookings, DateTime date, int roomCount)
+    private int GetBookingInDay(IReadOnlyCollection<Booking> bookings, DateTime date)
     {
-        return bookings.Count(b => b.IsBooked(date)) < roomCount;
+        return bookings.Count(b => b.IsBooked(date));
     }
 
     private int GetRoomCount(SearchQuery query)
     {
-        return hotelsRepository.GetRoomCount(query.HotelId, query.RoomType);
+        return hotelRepository.GetRoomCount(query.HotelId, query.RoomType);
     }
 }

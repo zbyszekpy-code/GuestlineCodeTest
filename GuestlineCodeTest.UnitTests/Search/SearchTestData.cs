@@ -13,26 +13,26 @@ public class SearchTestData : IEnumerable<object[]>
         // one day booked
         yield return
             [
-                new[] { new Booking(HotelId, midDate, midDate, RoomType), },
+                new[] { new Booking(HotelId, midDate, midDate.AddDays(1), RoomType), },
                 1,
                 new SearchQuery(HotelId, startDate, endDate, RoomType),
                 new SearchQueryResult(HotelId, RoomType,
                 [
-                    (startDate, midDate.AddDays(-1)),
-                    (midDate.AddDays(1), endDate),
+                    new (startDate, midDate.AddDays(-1), 1),
+                    new (midDate.AddDays(1), endDate, 1),
                 ])
             ];
 
         // one day overbooking
         yield return
             [
-                new[] { new Booking(HotelId, midDate, midDate, RoomType), new Booking(HotelId, midDate, midDate, RoomType), },
+                new[] { new Booking(HotelId, midDate, midDate.AddDays(1), RoomType), new Booking(HotelId, midDate, midDate.AddDays(1), RoomType), },
                 1,
                 new SearchQuery(HotelId, startDate, endDate, RoomType),
                 new SearchQueryResult(HotelId, RoomType,
                 [
-                    (startDate, midDate.AddDays(-1)),
-                    (midDate.AddDays(1), endDate),
+                    new (startDate, midDate.AddDays(-1), 1),
+                    new (midDate.AddDays(1), endDate, 1),
                 ])
             ];
 
@@ -40,13 +40,13 @@ public class SearchTestData : IEnumerable<object[]>
         // week with two short booking
         yield return
         [
-            new[] { new Booking(HotelId, midDate, midDate, RoomType), new Booking(HotelId, midDate.AddDays(3), midDate.AddDays(3), RoomType),},
+            new[] { new Booking(HotelId, midDate, midDate.AddDays(1), RoomType), new Booking(HotelId, midDate.AddDays(3), midDate.AddDays(4), RoomType),},
             1,
             new SearchQuery(HotelId, startDate, endDate, RoomType),
             new SearchQueryResult(HotelId, RoomType, [
-                (startDate, midDate.AddDays(-1)),
-                (midDate.AddDays(1), midDate.AddDays(2)),
-                (midDate.AddDays(4), endDate),
+                new (startDate, midDate.AddDays(-1), 1),
+                new (midDate.AddDays(1), midDate.AddDays(2), 1),
+                new (midDate.AddDays(4), endDate, 1),
             ])
         ];
 
@@ -54,18 +54,28 @@ public class SearchTestData : IEnumerable<object[]>
         // one busy day
         yield return
         [
-            new[] { new Booking(HotelId, startDate, startDate, RoomType), },
+            new[] { new Booking(HotelId, startDate, startDate.AddDays(1), RoomType), },
             2,
             new SearchQuery(HotelId, startDate, endDate, RoomType),
-            new SearchQueryResult(HotelId, RoomType, [(startDate, endDate)])
+            new SearchQueryResult(HotelId, RoomType, [new (startDate, endDate, 1)])
         ];
+
         // week with two short booking
         yield return
         [
-            new[] { new Booking(HotelId, startDate, startDate, RoomType), new Booking(HotelId, startDate.AddDays(3), startDate.AddDays(4), RoomType),},
+            new[] { new Booking(HotelId, startDate, startDate.AddDays(1), RoomType), new Booking(HotelId, startDate.AddDays(3), startDate.AddDays(4), RoomType),},
             2,
             new SearchQuery(HotelId, startDate, endDate, RoomType),
-            new SearchQueryResult(HotelId, RoomType, [(startDate, endDate)])
+            new SearchQueryResult(HotelId, RoomType, [new (startDate, endDate, 1)])
+        ];
+
+        // one busy day
+        yield return
+        [
+            new[] { new Booking(HotelId, midDate, midDate.AddDays(1), RoomType), new Booking(HotelId, midDate, midDate.AddDays(1), RoomType), },
+            2,
+            new SearchQuery(HotelId, startDate, endDate, RoomType),
+            new SearchQueryResult(HotelId, RoomType, [ new (startDate, midDate.AddDays(-1), 2), new (midDate.AddDays(1), endDate, 2)])
         ];
 
         // no rooms
@@ -81,7 +91,7 @@ public class SearchTestData : IEnumerable<object[]>
             Array.Empty<Booking>(),
             1,
             new SearchQuery(HotelId, startDate, endDate, RoomType),
-            new SearchQueryResult(HotelId, RoomType, [(startDate, endDate)])
+            new SearchQueryResult(HotelId, RoomType, [new (startDate, endDate, 1)])
         ];
     }
 

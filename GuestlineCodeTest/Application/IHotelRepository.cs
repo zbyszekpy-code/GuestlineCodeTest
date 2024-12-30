@@ -1,6 +1,6 @@
 namespace GuestlineCodeTest.Application;
 
-public interface IHotelsRepository
+public interface IHotelRepository
 {
     int GetRoomCount(string hotelId, string roomType);
 }

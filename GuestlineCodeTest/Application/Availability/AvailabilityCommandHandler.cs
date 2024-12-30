@@ -3,7 +3,7 @@ namespace GuestlineCodeTest.Application.Availability;
 public record AvailabilityQuery(string HotelId, DateTime From, DateTime To, string RoomType);
 public record AvailabilityQueryResult(string HotelId, string RoomType, int AvailableRooms);
 
-public class AvailabilityCommandHandler(IHotelsRepository hotelsRepository, IBookingRepository bookingRepository)
+public class AvailabilityCommandHandler(IHotelRepository hotelRepository, IBookingRepository bookingRepository)
 {
     public AvailabilityQueryResult Handle(AvailabilityQuery query)
     {
@@ -42,6 +42,6 @@ public class AvailabilityCommandHandler(IHotelsRepository hotelsRepository, IBoo
 
     private int GetRoomCount(AvailabilityQuery query)
     {
-        return hotelsRepository.GetRoomCount(query.HotelId, query.RoomType);
+        return hotelRepository.GetRoomCount(query.HotelId, query.RoomType);
     }
 }

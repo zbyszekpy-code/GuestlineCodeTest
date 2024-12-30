@@ -1,17 +1,17 @@
 using System.Text.Json.Serialization;
 
-namespace GuestlineCodeTest.InputModel;
+namespace GuestlineCodeTest.Repositories.InputModel;
 
-public record Booking
+public record BookingDto
 {
     [JsonPropertyName("hotelId")]
     public string HotelId { get; set; }
 
     [JsonPropertyName("arrival")]
-    public long Arrival { get; set; }
+    public string Arrival { get; set; }
 
     [JsonPropertyName("departure")]
-    public long Departure { get; set; }
+    public string Departure { get; set; }
 
     [JsonPropertyName("roomType")]
     public string RoomType { get; set; }
