@@ -7,9 +7,9 @@ using GuestlineCodeTest.Repositories.InputModel;
 
 namespace GuestlineCodeTest;
 
-class Program
+public static class Program
 {
-    static void Main(string[] args)
+    public static void Main(string[] args)
     {
         var hotelsOption = new Option<FileInfo?>(
             name: "--hotels",
@@ -23,20 +23,23 @@ class Program
         rootCommand.AddOption(hotelsOption);
         rootCommand.AddOption(bookingOption);
 
-        rootCommand.SetHandler((hotelsFile, bookingsFile) =>
-            { 
-                var hotels = new HotelRepository(hotelsFile is null ? Array.Empty<HotelDto>() : JsonSerializer.Deserialize<IReadOnlyCollection<HotelDto>>(File.ReadAllText(hotelsFile.FullName)) ?? Array.Empty<HotelDto>());
-                var booking = new BookingRepository(bookingsFile is null ? Array.Empty<BookingDto>() : JsonSerializer.Deserialize<IReadOnlyCollection<BookingDto>>(File.ReadAllText(bookingsFile.FullName)) ?? Array.Empty<BookingDto>());
-                DoRootCommand(hotels, booking);
-            },
-            hotelsOption, bookingOption);
+        rootCommand
+            .SetHandler((hotelsFile, bookingsFile) =>
+                {
+                    var hotels = new HotelRepository(JsonSerializer.Deserialize<IReadOnlyCollection<HotelDto>>(File.ReadAllText(hotelsFile!.FullName)) ?? Array.Empty<HotelDto>());
+                    var booking = new BookingRepository(JsonSerializer.Deserialize<IReadOnlyCollection<BookingDto>>(File.ReadAllText(bookingsFile!.FullName)) ?? Array.Empty<BookingDto>());
+                    DoRootCommand(hotels, booking);
+                },
+            hotelsOption,
+            bookingOption
+            );
 
         rootCommand.Invoke(args);
     }
 
     private static void DoRootCommand(IHotelRepository hotel, IBookingRepository booking)
     {
-        bool end = false;
+        var end = false;
         while (!end)
         {
             var input = Console.ReadLine();

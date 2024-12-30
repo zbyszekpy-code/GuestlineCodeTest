@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace GuestlineCodeTest.Repositories.InputModel;
 
-public partial class HotelDto
+public class HotelDto
 {
     [JsonPropertyName("id")]
     public string Id { get; set; }
@@ -18,7 +18,7 @@ public partial class HotelDto
     public RoomDto[] Rooms { get; set; }
 }
 
-public partial class RoomTypeDto
+public class RoomTypeDto
 {
     [JsonPropertyName("code")]
     public string Code { get; set; }
@@ -33,7 +33,7 @@ public partial class RoomTypeDto
     public string[] Features { get; set; }
 }
 
-public partial class RoomDto
+public class RoomDto
 {
     [JsonPropertyName("roomType")]
     public string RoomType { get; set; }
@@ -41,4 +41,3 @@ public partial class RoomDto
     [JsonPropertyName("roomId")]
     public string RoomId { get; set;}
 }
-

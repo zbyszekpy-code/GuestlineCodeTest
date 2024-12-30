@@ -12,19 +12,17 @@ public class SearchCommandHandler(IHotelRepository hotelRepository, IBookingRepo
         if (roomCount == 0)
         {
             return new SearchQueryResult(query.HotelId, query.RoomType, new List<AvailabilityRange>());
-
         }
+
         var bookings = bookingRepository.GetBookings(query.HotelId, query.From, query.To, query.RoomType);
 
-
         return new SearchQueryResult(query.HotelId, query.RoomType, GetAvailability(query, roomCount, bookings).ToList());
-
    }
 
     private IEnumerable<AvailabilityRange> GetAvailability(SearchQuery query, int roomCount, IReadOnlyCollection<Booking> bookings)
     {
-        int availableRooms = 0;
-        DateTime from = query.From;
+        var availableRooms = 0;
+        var from = query.From;
         for(var date = query.From; date <= query.To; date = date.AddDays(1))
         {
             var availableRoomsInDay = roomCount - GetBookingInDay(bookings, date);
@@ -38,7 +36,7 @@ public class SearchCommandHandler(IHotelRepository hotelRepository, IBookingRepo
 
             if (availableRoomsInDay <= 0 && availableRooms > 0)
             {
-                yield return new (from, date.AddDays(-1), availableRooms);
+                yield return new AvailabilityRange(from, date.AddDays(-1), availableRooms);
                 availableRooms = 0;
                 continue;
             }
@@ -49,10 +47,12 @@ public class SearchCommandHandler(IHotelRepository hotelRepository, IBookingRepo
             }
         }
 
-        if (availableRooms > 0)
+        if (availableRooms <= 0)
         {
-            yield return new (from, query.To, availableRooms);
+            yield break;
         }
+
+        yield return new AvailabilityRange(from, query.To, availableRooms);
     }
 
     private int GetBookingInDay(IReadOnlyCollection<Booking> bookings, DateTime date)

@@ -9,10 +9,15 @@ internal class BookingRepository : IBookingRepository
 
     public BookingRepository(IReadOnlyCollection<BookingDto> dtos)
     {
-        _bookings = dtos.Select(dto => new Booking(dto.HotelId,
-                DateTime.ParseExact(dto.Arrival, Constants.DateFormat, CultureInfo.InvariantCulture),
-                DateTime.ParseExact(dto.Departure, Constants.DateFormat, CultureInfo.InvariantCulture),
-                dto.RoomType))
+        _bookings = dtos
+            .Select(
+                dto => new Booking(
+                    dto.HotelId,
+                    DateTime.ParseExact(dto.Arrival, Constants.DateFormat, CultureInfo.InvariantCulture),
+                    DateTime.ParseExact(dto.Departure, Constants.DateFormat, CultureInfo.InvariantCulture),
+                    dto.RoomType
+                    )
+            )
             .ToArray();
     }
 

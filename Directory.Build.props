@@ -1,0 +1,50 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <AnalysisLevel>6</AnalysisLevel>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+		    <DefaultLanguage>en</DefaultLanguage>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    </PropertyGroup>
+
+    <Choose>
+        <When Condition="$(CustomIntermediateOutputPath)!=''">
+            <PropertyGroup>
+                <IntermediateOutputPath>$(CustomIntermediateOutputPath)\$(AssemblyName)\obj\</IntermediateOutputPath>
+            </PropertyGroup>
+        </When>
+    </Choose>
+
+    <ItemGroup>
+      <PackageReference Include="Roslynator.Analyzers" Version="4.12.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Roslynator.CodeAnalysis.Analyzers" Version="4.12.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.12.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle" Version="4.8.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <OutputPath Condition="'$(OutputPathBaseDir)' != '' AND '$(MSBuildProjectName)' == 'Application'">$(OutputPathBaseDir)\Application\</OutputPath>
+        <OutputPath Condition="'$(OutputPathBaseDir)' != '' AND $(MSBuildProjectName.Contains('.ComponentTests'))">$(OutputPathBaseDir)\ComponentTests\</OutputPath>
+        <OutputPath Condition="'$(OutputPathBaseDir)' != '' AND $(MSBuildProjectName.EndsWith('.IntegrationTests'))">$(OutputPathBaseDir)\IntegrationTests\</OutputPath>
+        <OutputPath Condition="'$(OutputPathBaseDir)' != '' AND $(MSBuildProjectName.EndsWith('.ModuleTests'))">$(OutputPathBaseDir)\ModuleTests\</OutputPath>
+        <OutputPath Condition="'$(OutputPathBaseDir)' != '' AND $(MSBuildProjectName.EndsWith('.Tests'))">$(OutputPathBaseDir)\UnitTests\</OutputPath>
+    </PropertyGroup>
+</Project>

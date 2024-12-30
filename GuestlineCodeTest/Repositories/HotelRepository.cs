@@ -6,6 +6,7 @@ namespace GuestlineCodeTest.Repositories;
 internal class HotelRepository : IHotelRepository
 {
     private readonly IReadOnlyCollection<HotelDto> _hotels;
+
     public HotelRepository(IReadOnlyCollection<HotelDto> dtos)
     {
         _hotels = dtos;

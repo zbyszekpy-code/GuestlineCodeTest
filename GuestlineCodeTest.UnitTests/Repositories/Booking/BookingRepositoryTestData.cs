@@ -7,9 +7,9 @@ public class BookingRepositoryTestData : IEnumerable<object[]>
 {
     public IEnumerator<object[]> GetEnumerator()
     {
-        DateTime startDate = DateTime.Today;
-        DateTime midDate = DateTime.Today.AddDays(10);
-        DateTime endDate = DateTime.Today.AddDays(100);
+        var startDate = DateTime.Today;
+        var midDate = DateTime.Today.AddDays(10);
+        var endDate = DateTime.Today.AddDays(100);
         // one day booked
         yield return
         [
@@ -20,8 +20,8 @@ public class BookingRepositoryTestData : IEnumerable<object[]>
                     HotelId = HotelId,
                     RoomType = RoomType,
                     Arrival = midDate.ToString(Constants.DateFormat),
-                    Departure = midDate.AddDays(1).ToString(Constants.DateFormat),
-                },
+                    Departure = midDate.AddDays(1).ToString(Constants.DateFormat)
+                }
             },
             HotelId,
             RoomType,
@@ -42,8 +42,8 @@ public class BookingRepositoryTestData : IEnumerable<object[]>
                     HotelId = HotelId,
                     RoomType = RoomType,
                     Arrival = startDate.AddDays(-10).ToString(Constants.DateFormat),
-                    Departure = midDate.ToString(Constants.DateFormat),
-                },
+                    Departure = midDate.ToString(Constants.DateFormat)
+                }
             },
             HotelId,
             RoomType,
@@ -64,8 +64,8 @@ public class BookingRepositoryTestData : IEnumerable<object[]>
                     HotelId = HotelId,
                     RoomType = RoomType,
                     Arrival = midDate.ToString(Constants.DateFormat),
-                    Departure = endDate.AddDays(10).ToString(Constants.DateFormat),
-                },
+                    Departure = endDate.AddDays(10).ToString(Constants.DateFormat)
+                }
             },
             HotelId,
             RoomType,
@@ -87,8 +87,8 @@ public class BookingRepositoryTestData : IEnumerable<object[]>
                     HotelId = HotelId,
                     RoomType = RoomType,
                     Arrival = endDate.AddDays(10).ToString(Constants.DateFormat),
-                    Departure = endDate.AddDays(11).ToString(Constants.DateFormat),
-                },
+                    Departure = endDate.AddDays(11).ToString(Constants.DateFormat)
+                }
             },
             HotelId,
             RoomType,
@@ -107,8 +107,8 @@ public class BookingRepositoryTestData : IEnumerable<object[]>
                     HotelId = HotelId,
                     RoomType = RoomType,
                     Arrival = startDate.AddDays(-11).ToString(Constants.DateFormat),
-                    Departure = startDate.AddDays(-10).ToString(Constants.DateFormat),
-                },
+                    Departure = startDate.AddDays(-10).ToString(Constants.DateFormat)
+                }
             },
             HotelId,
             RoomType,

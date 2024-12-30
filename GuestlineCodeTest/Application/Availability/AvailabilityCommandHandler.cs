@@ -11,7 +11,6 @@ public class AvailabilityCommandHandler(IHotelRepository hotelRepository, IBooki
         if (roomCount == 0)
         {
             return new AvailabilityQueryResult(query.HotelId, query.RoomType, 0);
-
         }
 
         var bookings = bookingRepository.GetBookings(query.HotelId, query.From, query.To, query.RoomType);

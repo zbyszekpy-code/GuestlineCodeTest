@@ -19,10 +19,10 @@ public class HotelRepositoryTestData : IEnumerable<object[]>
                     {
                         new RoomDto
                         {
-                            RoomType = RoomStdType,
+                            RoomType = RoomStdType
                         }
                     }
-                },
+                }
             },
             HotelId,
             RoomStdType,
@@ -40,10 +40,10 @@ public class HotelRepositoryTestData : IEnumerable<object[]>
                     {
                         new RoomDto
                         {
-                            RoomType = RoomStdType,
+                            RoomType = RoomStdType
                         }
                     }
-                },
+                }
             },
             HotelId,
             RoomDblType,
@@ -62,14 +62,14 @@ public class HotelRepositoryTestData : IEnumerable<object[]>
                     {
                         new RoomDto
                         {
-                            RoomType = RoomStdType,
+                            RoomType = RoomStdType
                         },
                         new RoomDto
                         {
-                            RoomType = RoomStdType,
+                            RoomType = RoomStdType
                         }
                     }
-                },
+                }
             },
             HotelId,
             RoomStdType,
@@ -88,22 +88,22 @@ public class HotelRepositoryTestData : IEnumerable<object[]>
                     {
                         new RoomDto
                         {
-                            RoomType = RoomStdType,
+                            RoomType = RoomStdType
                         },
                         new RoomDto
                         {
-                            RoomType = RoomStdType,
+                            RoomType = RoomStdType
                         },
                         new RoomDto
                         {
-                            RoomType = RoomDblType,
+                            RoomType = RoomDblType
                         },
                         new RoomDto
                         {
-                            RoomType = RoomDblType,
+                            RoomType = RoomDblType
                         }
                     }
-                },
+                }
             },
             HotelId,
             RoomStdType,

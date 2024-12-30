@@ -6,11 +6,11 @@ public class AvailabilityTestData : IEnumerable<object[]>
 {
     public IEnumerator<object[]> GetEnumerator()
     {
-        DateTime startDate = DateTime.Today;
+        var startDate = DateTime.Today;
         // one day
         yield return
             [
-                new[] { new Booking(HotelId, startDate, startDate, RoomType), },
+                new[] { new Booking(HotelId, startDate, startDate, RoomType) },
                 1,
                 new AvailabilityQuery(HotelId, startDate, startDate, RoomType),
                 new AvailabilityQueryResult(HotelId, RoomType, 0)
@@ -19,7 +19,7 @@ public class AvailabilityTestData : IEnumerable<object[]>
         // one day overbooking
         yield return
             [
-                new[] { new Booking(HotelId, startDate, startDate, RoomType), new Booking(HotelId, startDate, startDate, RoomType), },
+                new[] { new Booking(HotelId, startDate, startDate, RoomType), new Booking(HotelId, startDate, startDate, RoomType) },
                 1,
                 new AvailabilityQuery(HotelId, startDate, startDate, RoomType),
                 new AvailabilityQueryResult(HotelId, RoomType, -1)
@@ -28,7 +28,7 @@ public class AvailabilityTestData : IEnumerable<object[]>
         // one busy day
         yield return
         [
-            new[] { new Booking(HotelId, startDate, startDate, RoomType), },
+            new[] { new Booking(HotelId, startDate, startDate, RoomType) },
             1,
             new AvailabilityQuery(HotelId, startDate, startDate.AddDays(1), RoomType),
             new AvailabilityQueryResult(HotelId, RoomType, 0)
@@ -36,7 +36,7 @@ public class AvailabilityTestData : IEnumerable<object[]>
         // week with two short booking
         yield return
         [
-            new[] { new Booking(HotelId, startDate, startDate, RoomType), new Booking(HotelId, startDate.AddDays(3), startDate.AddDays(3), RoomType),},
+            new[] { new Booking(HotelId, startDate, startDate, RoomType), new Booking(HotelId, startDate.AddDays(3), startDate.AddDays(3), RoomType) },
             1,
             new AvailabilityQuery(HotelId, startDate, startDate.AddDays(7), RoomType),
             new AvailabilityQueryResult(HotelId, RoomType, 0)
@@ -46,7 +46,7 @@ public class AvailabilityTestData : IEnumerable<object[]>
         // one busy day
         yield return
         [
-            new[] { new Booking(HotelId, startDate, startDate, RoomType), },
+            new[] { new Booking(HotelId, startDate, startDate, RoomType) },
             2,
             new AvailabilityQuery(HotelId, startDate.AddDays(-1), startDate.AddDays(1), RoomType),
             new AvailabilityQueryResult(HotelId, RoomType, 1)
@@ -54,7 +54,7 @@ public class AvailabilityTestData : IEnumerable<object[]>
         // week with two short booking
         yield return
         [
-            new[] { new Booking(HotelId, startDate, startDate, RoomType), new Booking(HotelId, startDate.AddDays(3), startDate.AddDays(4), RoomType),},
+            new[] { new Booking(HotelId, startDate, startDate, RoomType), new Booking(HotelId, startDate.AddDays(3), startDate.AddDays(4), RoomType) },
             2,
             new AvailabilityQuery(HotelId, startDate, startDate.AddDays(7), RoomType),
             new AvailabilityQueryResult(HotelId, RoomType, 1)
